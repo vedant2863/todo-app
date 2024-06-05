@@ -1,4 +1,4 @@
-import mongoose, { MongoClient } from "mongoose";
+import mongoose from "mongoose";
 import { z } from "zod";
 
 const MongodbEnv = z.object({
@@ -6,16 +6,23 @@ const MongodbEnv = z.object({
 });
 const ProcessEnv = MongodbEnv.parse(process.env);
 
-export async function connectDB(): Promise<MongoClient> {
+type ConnectionObject = {
+  isConnected?: number;
+};
+
+const connection: ConnectionObject = {};
+
+export async function connectDB(): Promise<void> {
+  if (connection.isConnected) {
+    console.log("Already connected to the database");
+    return;
+  }
   try {
-    const client = await MongoClient.connect(ProcessEnv.MongoDB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log("Connected to MongoDB");
-    return client;
+    const db = await mongoose.connect(ProcessEnv.MongoDB_URI);
+    connection.isConnected = db.connections[0].readyState;
+    console.log("Database connected successfully");
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);
-    throw error; // Re-throw to handle in your application
+    throw error;
   }
 }
