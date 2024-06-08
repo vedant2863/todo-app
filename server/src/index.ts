@@ -3,18 +3,21 @@ import { Hono } from "hono";
 import { logger } from "hono/logger";
 import { poweredBy } from "hono/powered-by";
 import { prettyJSON } from "hono/pretty-json";
-import authRoutes from "./routes/auth.routes";
 
-//app
-const app = new Hono().basePath('/api')
+import authRoutes from "./routes/auth.routes";
+import todoRoutes from "./routes/todo.routes";
+import { connect } from "mongoose";
+import connectDB from "./utils/connectDB";
+
+// app
+const app = new Hono()
+  .basePath("/api")
+  .route("/auth", authRoutes)
+  .route("/todos", todoRoutes);
 
 app.get("/", (c) => {
-  return c.text("Hello Hono!");
+  return c.text("Hello World!");
 });
-
-// routes
-app.route("/auth", authRoutes);
-
 
 // middleware
 app.use("*", logger(), prettyJSON(), poweredBy());
@@ -30,9 +33,7 @@ app.onError((err, c) => {
   return c.text("Custom Error Message 500", 500);
 });
 
-
-
-//server || Port setup
+//index
 const ServeEnv = z.object({
   PORT: z
     .string()
@@ -42,13 +43,20 @@ const ServeEnv = z.object({
 });
 const ProcessEnv = ServeEnv.parse(process.env);
 
-
 const server = Bun.serve({
   port: ProcessEnv.PORT,
   hostname: "0.0.0.0",
   fetch: app.fetch,
 });
 
+app.get("/", (c) => {
+  return c.text("Hello Hono!");
+});
 
-
-console.log("server running", server.port);
+connectDB()
+  .then(() => {
+    console.log("server running on PORT: ", server.port);
+  })
+  .catch((err) => {
+    console.error("Error connecting to MongoDB:", err);
+  });
