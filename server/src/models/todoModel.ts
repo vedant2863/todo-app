@@ -1,6 +1,6 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model,Document } from 'mongoose';
 
-interface ITodo {
+interface ITodo extends Document{
   userId: string | undefined;
   title: string;
   description: string;

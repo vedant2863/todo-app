@@ -6,7 +6,6 @@ import { prettyJSON } from "hono/pretty-json";
 
 import authRoutes from "./routes/auth.routes";
 import todoRoutes from "./routes/todo.routes";
-import { connect } from "mongoose";
 import connectDB from "./utils/connectDB";
 
 // app
@@ -15,9 +14,7 @@ const app = new Hono()
   .route("/auth", authRoutes)
   .route("/todos", todoRoutes);
 
-app.get("/", (c) => {
-  return c.text("Hello World!");
-});
+
 
 // middleware
 app.use("*", logger(), prettyJSON(), poweredBy());
@@ -31,6 +28,10 @@ app.notFound((c) => {
 app.onError((err, c) => {
   console.error(`${err}`);
   return c.text("Custom Error Message 500", 500);
+});
+
+app.get("/", (c) => {
+  return c.text("Hello Hono!");
 });
 
 //index
@@ -49,14 +50,14 @@ const server = Bun.serve({
   fetch: app.fetch,
 });
 
-app.get("/", (c) => {
-  return c.text("Hello Hono!");
-});
+// console.log(server);
+
+
 
 connectDB()
   .then(() => {
-    console.log("server running on PORT: ", server.port);
+    console.log("⚙️ Server is running at port : ", server.port);
   })
   .catch((err) => {
-    console.error("Error connecting to MongoDB:", err);
+    console.log("MONGO db connection failed !!! ", err);
   });

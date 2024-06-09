@@ -13,6 +13,7 @@ async function connectDB(): Promise<Db> {
   } catch (err) {
     console.error('Failed to connect to MongoDB', err);
     throw err;
+    process.exit(1)
   }
 }
 

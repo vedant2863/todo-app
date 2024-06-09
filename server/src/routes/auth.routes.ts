@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { register, login } from "../controller/auth.controllers";
+import { register, login ,logout} from "../controller/auth.controllers";
 
 const authRoutes = new Hono();
 authRoutes.get("/", (c) => {
@@ -8,5 +8,7 @@ authRoutes.get("/", (c) => {
 
 authRoutes.post("/register", register);
 authRoutes.post("/login", login);
+authRoutes.post("/logout", logout);
+
 
 export default authRoutes;

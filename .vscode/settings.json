@@ -3,6 +3,9 @@
         "authroutes",
         "Hono",
         "Kuma",
+        "lucide",
+        "reduxjs",
+        "signup",
         "todos"
     ]
 }
