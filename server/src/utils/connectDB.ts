@@ -1,20 +1,23 @@
-import { MongoClient, Db } from 'mongodb';
+import mongoose from "mongoose";
+import { config } from "./config";
 
-// Replace the following with your MongoDB connection string
-const uri = process.env.MONGO_URI as string;
-const client = new MongoClient(uri);
-
-async function connectDB(): Promise<Db> {
+const connectDB = async () => {
   try {
-    await client.connect();
-    console.log('Connected to MongoDB');
-    const db = client.db('todo-app'); // Replace with your database name
-    return db;
+    await mongoose.connect(config.MONGO_URI as string);
+    console.log('connected to DB');
+    
+    mongoose.connection.on("connected", () => {
+      console.log("Connected to database successfully");
+    });
+
+    mongoose.connection.on("error", (err) => {
+      console.log("Error in connecting to database.", err);
+    });
+
   } catch (err) {
-    console.error('Failed to connect to MongoDB', err);
-    throw err;
-    process.exit(1)
+    console.error("Failed to connect to database.", err);
+    process.exit(1);
   }
-}
+};
 
 export default connectDB;

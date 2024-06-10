@@ -1,19 +1,24 @@
-import { Schema, model,Document } from 'mongoose';
+import { Schema, model, Document } from "mongoose";
 
-interface ITodo extends Document{
-  userId: string | undefined;
+export interface ITodo extends Document {
   title: string;
-  description: string;
-  completed: boolean;
+  status: string;
+  dueDate: Date;
 }
 
-const todoSchema = new Schema<ITodo>({
-  userId: { type: Schema.Types.ObjectId, ref: 'User' },
-  title: { type: String, required: true },
-  description: { type: String },
-  completed: { type: Boolean, default: false }
-});
+const todoSchema = new Schema<ITodo>(
+  {
+    title: { type: String, required: true },
+    status: {
+      type: String,
+      enum: ["pending", "completed"],
+      default: "pending",
+    },
+    dueDate: { type: Date },
+  },
+  { timestamps: true }
+);
 
-const Todo = model<ITodo>('Todo', todoSchema);
+const Todo = model<ITodo>("Todo", todoSchema);
 
 export default Todo;
