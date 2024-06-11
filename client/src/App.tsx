@@ -1,11 +1,9 @@
-
-import Navbar from "./components/Navbar"
+import Navbar from "./components/Navbar";
 
 export const App = () => {
   return (
     <div>
-        <Navbar/>
-        
+      <Navbar />
     </div>
-  )
-}
+  );
+};

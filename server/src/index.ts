@@ -7,11 +7,19 @@ import { cors } from "hono/cors";
 import { config } from "./utils/config";
 import connectDB from "./utils/connectDB";
 import { authRoutes } from "./routes/auth.routes";
+import { todoRoutes } from "./routes/todo.routes";
 
 //app
-const app = new Hono().basePath("/api").route("/auth", authRoutes);
+const app = new Hono()
+  .basePath("/api")
+  .route("/auth", authRoutes)
+  .route("/todo", todoRoutes);
 
-app.get("/", (c) => c.text("Hello Bun!"));
+
+app.get("/", (c) => {
+  c.req.header();
+  return c.text("Hello Hono!");
+});
 
 // middleware
 app.use("*", logger(), prettyJSON(), poweredBy());

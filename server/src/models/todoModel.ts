@@ -1,9 +1,10 @@
-import { Schema, model, Document } from "mongoose";
+import mongoose, { Schema, model, Document } from "mongoose";
 
 export interface ITodo extends Document {
   title: string;
   status: string;
   dueDate: Date;
+  userId: mongoose.Schema.Types.ObjectId;
 }
 
 const todoSchema = new Schema<ITodo>(
@@ -14,7 +15,8 @@ const todoSchema = new Schema<ITodo>(
       enum: ["pending", "completed"],
       default: "pending",
     },
-    dueDate: { type: Date },
+    dueDate: { type: Date , default: Date.now },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   },
   { timestamps: true }
 );
