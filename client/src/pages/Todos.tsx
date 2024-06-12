@@ -1,6 +1,5 @@
-import React from 'react'
 
-const Todos = () => {
+function Todos() {
   return (
     <div>
       Todos

@@ -7,8 +7,8 @@ const Logo = () => {
       <img
           src="vite.svg"
           alt="LOGO"
-          width={"90px"}
-          height={"90px"}
+          width={"50px"}
+          height={"50px"}
           className=""
         />
       </Link>

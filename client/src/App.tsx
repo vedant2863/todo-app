@@ -1,9 +1,10 @@
-import Navbar from "./components/Navbar";
 
-export const App = () => {
+function App() {
   return (
     <div>
-      <Navbar />
+      app
     </div>
-  );
-};
+  )
+}
+
+export default App

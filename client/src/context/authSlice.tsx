@@ -29,10 +29,12 @@ const authSlice = createSlice({
         state.userData = data;
       });
     },
-    
+
     logout: (state) => {
-      state.status = false;
-      state.userData = null;
+      try {
+        state.status = false;
+        state.userData = null;
+      } catch (error) {}
     },
   },
 });
