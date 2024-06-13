@@ -9,6 +9,8 @@
         "moongoose",
         "reduxjs",
         "signup",
-        "todos"
+        "todos",
+        "tokendata",
+        "userdecoded"
     ]
 }

@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
-import { config } from "./config";
+import { DbName, url } from "./constants";
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(config.MONGO_URI as string);
+
+    await mongoose.connect( `${url}/${DbName}`);
     console.log('connected to DB');
     
     mongoose.connection.on("connected", () => {

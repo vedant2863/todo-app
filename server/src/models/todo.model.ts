@@ -7,7 +7,7 @@ export interface ITodo extends Document {
   userId: mongoose.Schema.Types.ObjectId;
 }
 
-const todoSchema = new Schema<ITodo>(
+export const todoSchema = new Schema<ITodo>(
   {
     title: { type: String, required: true },
     status: {
@@ -15,8 +15,12 @@ const todoSchema = new Schema<ITodo>(
       enum: ["pending", "completed"],
       default: "pending",
     },
-    dueDate: { type: Date , default: Date.now },
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    dueDate: { type: Date, default: Date.now },
   },
   { timestamps: true }
 );

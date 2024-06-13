@@ -1,13 +1,15 @@
-import { Hono } from "hono";
+import { Context, Hono, Next } from "hono";
 import { logger } from "hono/logger";
 import { prettyJSON } from "hono/pretty-json";
 import { poweredBy } from "hono/powered-by";
 import { cors } from "hono/cors";
+import { bearerAuth } from "hono/bearer-auth";
 
 import { config } from "./utils/config";
 import connectDB from "./utils/connectDB";
 import { authRoutes } from "./routes/auth.routes";
 import { todoRoutes } from "./routes/todo.routes";
+import { authMiddleware } from "./middleware/auth.middleware";
 
 //app
 const app = new Hono()
@@ -15,15 +17,14 @@ const app = new Hono()
   .route("/auth", authRoutes)
   .route("/todo", todoRoutes);
 
-
-app.get("/", (c) => {
-  c.req.header();
-  return c.text("Hello Hono!");
-});
-
 // middleware
 app.use("*", logger(), prettyJSON(), poweredBy());
 app.use("/api/*", cors());
+app.get("/todo*", authMiddleware);
+
+// todo middleware setup
+const privilegedMethods = ['POST', 'PUT', 'PATCH', 'DELETE']
+app.on(privilegedMethods,'/todo*',authMiddleware)
 
 // Custom Not Found Message
 app.notFound((c) => {
@@ -36,9 +37,7 @@ app.onError((err, c) => {
   return c.text("Custom Error Message 500", 500);
 });
 
-app.get("/", (c) => {
-  return c.text("Hello Hono!");
-});
+app.get("/", (c) => c.text("Hello Bun!"));
 
 //index
 

@@ -11,7 +11,7 @@ export const createToken = async (c: Context, user: IUser) => {
     id: user._id,
     username: user.username,
     email: user.email,
-    exp: Math.floor(Date.now() / 1000) + 60 * 50,
+    exp: Math.floor(Date.now() / 1000) + 60 * 2,
   };
   //create token
   const token = await sign(tokenData, config.JWT_SECRET!);
@@ -22,6 +22,8 @@ export const createToken = async (c: Context, user: IUser) => {
     secure: true,
   });
   console.log(cookie);
+  console.log(typeof cookie);
+  
   return token;
 };
 
@@ -35,12 +37,13 @@ export const verifyToken = async (cookie: string) => {
 };
 
 export const decodedToken = async (tokenToDecode: string) => {
-  const decodedToken = await decode(tokenToDecode);
+  const decodedToken =  decode(tokenToDecode.toString());
   if (!decodedToken) {
     throw new Error("Invalid token");
   }
-  const { header, payload } = decodedToken;
+  const { header, payload } = await decodedToken
   console.log("Decoded Header:", header);
   console.log("Decoded Payload:", payload);
+
   return { payload, header };
 };

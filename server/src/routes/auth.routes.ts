@@ -20,8 +20,10 @@ export const authRoutes = new Hono()
       deleteCookie(c, COOKIE_NAME);
       const token = await createToken(c, user);
       console.log(token);
+      console.log("type: ", typeof token);
       const cookie = setCookie(c, COOKIE_NAME, token);
       console.log(cookie);
+      console.log("type: ", typeof cookie);
       return c.json({ message: "Signup success" }, { status: 201 });
     } catch (error: any) {
       console.log("signup error: ", error.message);
@@ -32,11 +34,14 @@ export const authRoutes = new Hono()
     try {
       console.log("/login");
       const { email, password } = await c.req.json();
+      console.log(email, password);
+
       //check if user exists
       const user = await User.findOne({ email });
       if (!user) {
-        return c.json({ error: "User not registered" }, { status: 400 });
+        return c.json({ error: "User not registered", status: 400 });
       }
+
       //check if password is correct
       const isMatch = await Bun.password.verify(password, user.password);
       if (!isMatch) {

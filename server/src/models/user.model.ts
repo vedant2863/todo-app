@@ -1,5 +1,5 @@
-import { Schema, model,Document } from 'mongoose';
-
+import { Schema, model, Document } from "mongoose";
+import { ITodo } from "./todo.model";
 
 export interface IUser extends Document {
   username: string;
