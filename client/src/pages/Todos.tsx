@@ -1,10 +1,6 @@
 
 function Todos() {
-  return (
-    <div>
-      Todos
-    </div>
-  )
+  return <div>todos</div>;
 }
 
-export default Todos
+export default Todos;

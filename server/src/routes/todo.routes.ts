@@ -33,7 +33,7 @@ export const todoRoutes = new Hono()
       const userId = c.req.param("userId");
       const todos = await Todo.find({ userId });
       console.log(todos);
-      const { title, date } = await c.req.json();
+      const { title } = await c.req.json();
       const userCookie = getCookie(c, COOKIE_NAME);
       console.log("userCookie: ", userCookie);
       if (!userCookie)
@@ -44,7 +44,7 @@ export const todoRoutes = new Hono()
       const newTodo = new Todo({
         title,
         status: "pending",
-        dueDate: new Date() || date,
+        dueDate: new Date() ,
         userId: userId || userVerifiedToken.id,
       });
       await newTodo.save();
