@@ -11,7 +11,7 @@ function SignUp() {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: zodResolver(UserSchema), // Apply the zodResolver
+    resolver: zodResolver(UserSchema),
   });
 
   const onSubmit = (data: FormData) => console.log(data);
@@ -19,6 +19,7 @@ function SignUp() {
   return (
     <div className=" bg-red-300 w-full h-full flex justify-center items-center my-30">
       <form onSubmit={handleSubmit(onSubmit)} >
+        
         <div className="">
           <label htmlFor="username">Username</label>
           <FormField
@@ -30,6 +31,7 @@ function SignUp() {
             error={errors.username}
           />
         </div>
+
         <div>
           <label htmlFor="email">Email</label>
           <FormField

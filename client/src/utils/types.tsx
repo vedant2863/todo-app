@@ -7,6 +7,7 @@ export type FormData = {
   password: string;
 };
 
+
 export type FormFieldProps = {
   type: string;
   placeholder: string;
@@ -24,8 +25,8 @@ export type ValidFieldNames =
   | "password"
 
 export const UserSchema: ZodType<FormData> = z.object({
-  username: z.string().min(3).max(20),
-  email: z.string().email(),
-  password: z.string().min(8).max(20),
+  username: z.string().min(1, "Username is required").max(20),
+  email: z.string().email("Enter a valid email"),
+  password: z.string().min(6, "Password must be at least 6 characters").max(20),
 })
 
