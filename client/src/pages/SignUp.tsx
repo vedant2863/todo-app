@@ -1,9 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import FormField from "../components/FormField";
 import { UserSchema } from "../utils/types";
-
-
+import FormField from "../components/FormField";
+import { FormData } from "../utils/types";
 
 function SignUp() {
   const {
@@ -17,13 +16,12 @@ function SignUp() {
   const onSubmit = (data: FormData) => console.log(data);
 
   return (
-    <div className=" bg-red-300 w-full h-full flex justify-center items-center my-30">
-      <form onSubmit={handleSubmit(onSubmit)} >
-        
-        <div className="">
-          <label htmlFor="username">Username</label>
+    <div>
+      <form
+        onSubmit={handleSubmit(onSubmit)}>
+        <div>
+          <label htmlFor="username">  username</label>
           <FormField
-            className={'bg-red-200'}
             type="username"
             placeholder="username"
             name="username"
@@ -31,11 +29,9 @@ function SignUp() {
             error={errors.username}
           />
         </div>
-
         <div>
-          <label htmlFor="email">Email</label>
+          <label htmlFor="Email"> Email </label>
           <FormField
-            className={'bg-red-200'}
             type="email"
             placeholder="Email"
             name="email"
@@ -43,24 +39,23 @@ function SignUp() {
             error={errors.email}
           />
         </div>
-
         <div>
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">  password</label>
           <FormField
-            className={'bg-red-200'}
             type="password"
-            placeholder="password"
+            placeholder="Password"
             name="password"
             register={register}
             error={errors.password}
           />
         </div>
-
-        <button type="submit" className="submit-button">Submit</button>
+        <button
+          type="submit"
+          className="submit-button">
+          Submit
+        </button>
       </form>
     </div>
-
   );
 }
-
 export default SignUp;

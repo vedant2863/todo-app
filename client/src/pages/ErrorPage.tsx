@@ -1,6 +1,6 @@
 import { useRouteError, isRouteErrorResponse } from "react-router-dom";
 
-function RootBoundary() {
+function ErrorPage() {
   const error = useRouteError();
 
   if (isRouteErrorResponse(error)) {
@@ -24,4 +24,4 @@ function RootBoundary() {
   return <div>Something went wrong</div>;
 }
 
-export default RootBoundary;
+export default ErrorPage;
