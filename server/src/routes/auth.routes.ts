@@ -30,9 +30,9 @@ export const authRoutes = new Hono()
       c.json({ error: error.message }, { status: 500 });
     }
   })
-  .post("/login", async (c) => {
+  .post("/signin", async (c) => {
     try {
-      console.log("/login");
+      console.log("/signin");
       const { email, password } = await c.req.json();
       console.log(email, password);
 

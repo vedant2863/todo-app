@@ -1,8 +1,6 @@
-"use client";
-
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
-import Logout from "./Logout";
+import { Link } from "react-router-dom";
 import Logo from "./shared/Logo";
 
 export function Navbar() {
@@ -14,19 +12,14 @@ export function Navbar() {
 
   const authStatus = false;
 
-  type MenuItem = {
-    name: string;
-    slug: string;
-    active: boolean;
-  };
-  const menuItems: MenuItem[] = [
+  const menuItems = [
     {
       name: "Home",
       slug: "/",
       active: true,
     },
     {
-      name: "signIn",
+      name: "SignIn",
       slug: "/signIn",
       active: !authStatus,
     },
@@ -48,71 +41,57 @@ export function Navbar() {
   ];
 
   return (
-    <div className="relative w-full bg-white">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 sm:px-6 lg:px-8">
-        <div className="inline-flex items-center space-x-2">
+    <header className="flex justify-between items-center cursor-default px-20 py-2 mt-1">
+      <div className="cursor-default">
+        <Link to="/">
           <Logo />
-        </div>
-        <div className="hidden grow items-start lg:flex ">
-          <ul className="ml-12 inline-flex space-x-8">
-            {menuItems.map((item) =>
-              item.active ? (
-                <li key={item.name}>
-                  <a
-                    href={item.slug}
-                    className="text-lg font-semibold text-gray-800 hover:bg-gray-50"
-                  >
-                    {item.name}
-                  </a>
-                </li>
-              ) : null
-            )}
-          </ul>
-        </div>
-        <div className="hidden lg:block mx-2">{authStatus && <Logout />}</div>
-        <div className="lg:hidden">
-          <Menu onClick={toggleMenu} className="h-6 w-6 cursor-pointer" />
-        </div>
-        {isMenuOpen && (
-          <div className="absolute inset-x-0 top-0 z-50 origin-top-right transform p-2 transition lg:hidden">
-            <div className="divide-y-2 divide-gray-50 rounded-lg bg-violet-500 shadow-lg ring-1 ring-black ring-opacity-5">
-              <div className="px-5 pb-6 pt-5">
-                <div className="flex items-center justify-between">
-                  <div className="inline-flex items-center space-x-2">
-                    <Logo />
-                  </div>
-                  <div className="-mr-2">
-                    <button
-                      type="button"
-                      onClick={toggleMenu}
-                      className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-                    >
-                      <span className="sr-only">Close menu</span>
-                      <X className="h-6 w-6" aria-hidden="true" />
-                    </button>
-                  </div>
-                </div>
-                <div className="mt-6 flex justify-between">
-                  <nav className="grid gap-y-4  ">
-                    {menuItems.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.slug}
-                        className="-m-3 flex items-center rounded-md p-3 text-sm font-semibold hover:bg-gray-50 "
-                      >
-                        <span className="ml-3 text-base font-medium text-gray-900">
-                          {item.name}
-                        </span>
-                      </a>
-                    ))}
-                  </nav>
-                </div>
-                {authStatus && <Logout />}
-              </div>
-            </div>
-          </div>
+        </Link>
+      </div>
+      <div className="hidden lg:flex justify-evenly items-center">
+        {menuItems.map(
+          (item) =>
+            item.active && (
+              <li key={item.name} className="list-none">
+                <Link to={item.slug} className="px-6 py-2 duration-200 hover:bg-blue-100 rounded-full">
+                  {item.name}
+                </Link>
+              </li>
+            )
         )}
       </div>
-    </div>
+      <div className="lg:hidden">
+        <button
+          onClick={toggleMenu}
+          className="inline-block px-6 py-2 duration-200 hover:bg-blue-100 rounded-full"
+        >
+          <Menu className="h-6 w-6 cursor-pointer" />
+        </button>
+      </div>
+
+      {isMenuOpen && (
+        <div className="absolute top-0 right-0 h-full bg-black flex flex-row justify-between w-3/4 p-5">
+          <div className="flex flex-col">
+            {menuItems.map((item) => (
+              <Link
+                key={item.name}
+                to={item.slug}
+                onClick={() => setIsMenuOpen(false)}
+                className="px-6 py-2 duration-200 hover:bg-blue-100 hover:text-black rounded-md cursor-pointer text-white"
+              >
+                {item.name}
+              </Link>
+            ))}
+          </div> 
+          <div className="flex justify-end h-12 rounded-full">
+            <button
+              onClick={toggleMenu}
+              className="px-6 py-2 duration-200 bg-red-800 hover:bg-blue-100 rounded-full"
+            >
+              <X className="fill-white h-6 w-6" />
+            </button>
+          </div>
+        </div>
+      )}
+    </header>
   );
 }
