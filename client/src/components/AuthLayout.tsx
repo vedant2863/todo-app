@@ -1,43 +1,28 @@
-import { ReactNode } from "react";
-import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { selectAuth, logoutUser } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 
-interface ProtectedProps {
-    children: ReactNode;
-    authentication?: boolean;
-}
+const AuthLayout: React.FC<{ authentication: boolean }> = ({
+  authentication,
+  children,
+}) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { token } = useSelector(selectAuth);
 
-interface RootState {
-    auth: {
-        status: boolean;
-    };
-}
+  useEffect(() => {
+    if (authentication && !token) {
+      navigate("/signin");
+    }
+  }, [authentication, token, navigate]);
 
-export default function Protected({ children, authentication = true }: ProtectedProps) {
-    const navigate = useNavigate();
-    const [loader, setLoader] = useState(true);
-    const authStatus = useSelector((state: RootState) => state.auth.status)
+  return (
+    <div>
+      <button onClick={() => dispatch(logoutUser())}>Logout</button>
+      {children}
+    </div>
+  );
+};
 
-    
-    useEffect(() => {
-        if (authentication && authStatus !== authentication) {
-            navigate("/login");
-        } else if (!authentication && authStatus !== true) {
-            navigate("/");
-        }
-        setLoader(false);
-
-    }, [authStatus, navigate, authentication]);
-
-    return loader ? <h1>Loading...</h1> : <>{children}</>;
-}
-
-
-
-// const token = await getTokenFromWebWorker();
-//   if (!token) {
-//     throw new Response("", { status: 401 });
-//   }
-//   return token;
-// }
+export default AuthLayout;
